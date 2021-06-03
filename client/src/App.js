@@ -9,6 +9,7 @@ import MyCard from './components/MyCard';
 import MyNavbar from './components/MyNavbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Logout from './pages/Logout';
 import CreateChannel from './pages/CreateChannel';
 import MyChannels from "./pages/MyChannels";
 import Home from "./pages/Home";
@@ -31,6 +32,7 @@ function App() {
           {/* <Route path='/subscriptions' component={Subscriptions} /> */}
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
+          <Route path='/logout' component={Logout} />
           <Route path='/channel/new' component={CreateChannel} />
           <Route path='/channel' component={MyChannels} />
           <Route path='/video/channel/:id' component={ChannelPage} />

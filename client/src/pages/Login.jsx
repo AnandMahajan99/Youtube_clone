@@ -22,11 +22,12 @@ function Login() {
           Cookies.set("email", res.data.data.email);
           window.location = "/";
         } else {
-          console.log(res.status.data);
+          // console.log(res.status.data);
+          window.alert(res.status.data);
         }
       })
       .catch((err) => {
-        alert(err.response);
+        alert(err.response.data.data);
       });
   };
 

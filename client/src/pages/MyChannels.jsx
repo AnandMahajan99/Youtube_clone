@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { NavLink } from 'react-router-dom';
 import apis from "../api";
 import Cookies from "js-cookie";
 import { Button, Container, Table } from "react-bootstrap";
@@ -42,10 +43,10 @@ function MyChannels() {
             <tr key={item._id + "0"}>
               <td key={item._id + "1"}>{item.name}</td>
               <td key={item._id + "2"}>
-                <Button href={"/admin/video/channel/" + item._id}>View</Button>
+                <NavLink to={"/admin/video/channel/" + item._id}><Button>View</Button></NavLink>
               </td>
               <td key={item._id + "3"}>
-                <Button href={"/upload/" + item._id}>Upload</Button>
+                <NavLink to={"/upload/" + item._id}><Button>Upload</Button></NavLink>
               </td>
               <td key={item._id + "4"}>
                 <Button variant="danger" onClick={() => handleDelete(item._id)}>

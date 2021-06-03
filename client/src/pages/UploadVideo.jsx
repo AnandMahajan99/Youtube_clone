@@ -15,54 +15,64 @@ function Upload() {
 
   const changeTitle = (event) => setTitle(event.target.value);
   const changeDescription = (event) => setDescription(event.target.value);
-  const changeFile = (event) => {
-    setFile(event.target.files[0]);
-    setVideo(URL.createObjectURL(event.target.files[0]));
+  const changeFile = async (event) => {
+    await setFile(event.target.files[0]);
+    await setVideo(URL.createObjectURL(event.target.files[0]));
   };
   const { id } = useParams();
 
-  useEffect(() => {
-    var i = setInterval(function () {
-      if (myVid.current.readyState > 0) {
+  // useEffect(() => {
+  //   var i = setInterval(function () {
+  //     if (myVid.current.readyState > 0) {
+  //       var minutes = parseInt(myVid.current.duration / 60, 10);
+  //       var seconds = myVid.current.duration % 60;
+  //       setDuration(minutes + "." + Math.floor(seconds));
+  //       clearInterval(i);
+  //     }
+  //   }, 200);
+  // }, [video]);
+
+  const submitForm = async (event) => {
+    event.preventDefault();
+    if (title === "" || description === "" || file === ""){
+      return window.alert("Please fill all the fields");
+    } else {
+      // console.log(parseInt(myVid.current.duration / 60, 10));
+      // if (myVid.current.readyState > 0) {
         var minutes = parseInt(myVid.current.duration / 60, 10);
         var seconds = myVid.current.duration % 60;
-        setDuration(minutes + "." + Math.floor(seconds));
-        clearInterval(i);
-      }
-    }, 200);
-  }, [video]);
-
-  const submitForm = (event) => {
-    event.preventDefault();
-
-    let formData = new FormData();
-    const config = {
-      header: { "content-type": "multipart/form-data" },
-    };
-
-    formData.append("file", file);
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("duration", duration);
-    // console.log(Cookies.get("user"));
-    formData.append("channel", id);
-    formData.append("user", Cookies.get("user"));
-
-    apis
-      .uploadVideo(formData, config)
-      .then((res) => {
-        if (res.data.status === "success") {
-          alert("Success");
-          // console.log(res);
-        } else {
-          // alert("Failed to save data");
-          alert(res.data.data);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-        console.log(err.res);
-      });
+        await setDuration(minutes + "." + Math.floor(seconds));
+      // }
+  
+      let formData = new FormData();
+      const config = {
+        header: { "content-type": "multipart/form-data" },
+      };
+  
+      formData.append("file", file);
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("duration", duration);
+      // console.log(Cookies.get("user"));
+      formData.append("channel", id);
+      formData.append("user", Cookies.get("user"));
+      console.log(duration);
+      apis
+        .uploadVideo(formData, config)
+        .then((res) => {
+          if (res.data.status === "success") {
+            alert("Success");
+            // console.log(res);
+          } else {
+            // alert("Failed to save data");
+            alert(res.data.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+          console.log(err.res);
+        });
+    }
   };
 
   return (

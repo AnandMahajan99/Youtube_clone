@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import { SidebarData } from "./SidebarData";
@@ -31,8 +31,8 @@ function MyNavbar(props) {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="#pricing">Subscriptions</Nav.Link>
+                <NavLink to="/">Home</NavLink>
+                {/* <NavLink href="/">Subscriptions</NavLink> */}
               </Nav>
 
               {/* <Form inline className="d-flex">
@@ -47,24 +47,37 @@ function MyNavbar(props) {
               </Form> */}
 
               <Nav className="">
-              <NavDropdown title="Account" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Edit Profile</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="/channel">
-                    My Channel
+                <NavDropdown title="Account" id="collasible-nav-dropdown">
+                  <NavDropdown.Item href="#action/3.1">
+                    Edit Profile
                   </NavDropdown.Item>
-                  
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item>
+                    <NavLink to='/channel'>
+                    My Channel
+                    </NavLink>
+                  </NavDropdown.Item>
                 </NavDropdown>
-                
-                <Button variant="outline-info" className="" href="/login">
-                  Login
+
+                  <NavLink to="/login">
+                <Button variant="outline-info" className="">
+                    Login
                 </Button>
+                  </NavLink>
+                  <NavLink to="/logout">
                 <Button variant="outline-info" className="ml-2" href="/logout">
                   Logout
                 </Button>
-                <Button variant="outline-info" className="ml-2" href="/channel/new">
+                </NavLink>
+                <NavLink to="/channel/new">
+                <Button
+                  variant="outline-info"
+                  className="ml-2"
+                  href="/channel/new"
+                >
                   Create Channel
                 </Button>
+                </NavLink>
               </Nav>
             </Navbar.Collapse>
           </Container>

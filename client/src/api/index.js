@@ -10,8 +10,9 @@ const api = axios.create({
     // baseURL: 'http://localhost:8080'
 });
 
-export const register = payload => api.post(`/api/v1/user/register`, payload)
+export const register = payload => api.post(`/api/v1/auth/register`, payload)
 export const login = payload => api.post(`/api/v1/auth/login`, payload)
+export const logout = () => api.post(`/api/v1/auth/logout`)
 
 export const getChannel = id => api.get(`/api/v1/channel/${id}`)
 export const createChannel = payload => api.post(`/api/v1/channel`, payload)
@@ -29,6 +30,7 @@ export const deleteVideo = id => api.delete(`/api/v1/video/${id}`)
 const apis = {
     register,
     login,
+    logout,
     getChannel,
     createChannel,
     uploadVideo,

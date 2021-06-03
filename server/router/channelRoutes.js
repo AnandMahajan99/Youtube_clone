@@ -12,3 +12,4 @@ Router.post('/', channelController.createChannel);
 Router.delete('/:id', channelController.deleteChannel);
 
 module.exports = Router;
+

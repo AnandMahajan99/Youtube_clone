@@ -1,5 +1,6 @@
 const User = require("./../model/user");
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -30,6 +31,30 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
+exports.register = async (req, res, next) => {
+  try{
+      const { email , password, cpassword } = req.body;
+
+      if (!email || !password || !cpassword){
+          return res.status(422).json({ status: "failed", data: "Please fill all the fields"})
+      } 
+      if(password != cpassword){
+          return res.status(422).json({ status: "failed", data: "Password and Confirm Password must be same."})
+      }
+      const user = await User.create({ email, password});
+      res.status(201).json({
+          status: 'success',
+          data: user 
+      })
+  } catch(err) {
+      res.status(500).json({
+          status: 'failed',
+          data: err
+      })
+  }
+}
+
+
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -40,7 +65,7 @@ exports.login = async (req, res, next) => {
     }
 
     //2) Check if user exist and password is correct
-    const user = await User.findOne({ email, password });
+    const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return res.status(401).json({
         status: "failed",
@@ -48,6 +73,15 @@ exports.login = async (req, res, next) => {
       });
     }
 
+    const match = await bcrypt.compare(password, user.password);
+
+    if(!match) {
+      return res.status(401).json({
+        status: "failed",
+        data: "Email or Password is wrong",
+      });
+    }
+    
     //3) If everything ok, send token to client
     createSendToken(user, 200, res);
   } catch (err) {
@@ -61,7 +95,10 @@ exports.login = async (req, res, next) => {
 exports.logout = async (req, res, next) => {
   try {
     res.clearCookie("jwt");
-    res.status(200).json({ status: "success" });
+    res.status(200).json({ 
+      status: "success",
+      data: "User Logged out" 
+    });
   } catch (err) {
     res.status(500).json({
       status: "failed",

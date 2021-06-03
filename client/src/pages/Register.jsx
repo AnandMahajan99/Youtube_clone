@@ -10,19 +10,26 @@ function Register() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [cpassword, setCPassword] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (password === confirmPassword) {
-      const data = { email, password };
+    if (password === cpassword) {
+      const data = { email, password, cpassword };
       apis.register(data).then((res) => {
         if (res.data.status === "success") {
-          console.log("Register Success");
-          alert("Register Success");
+          console.log("User Registered Successfully");
+          window.alert("Register Success");
           // window.location("/login");
           history.push("/login");
+        } else {
+          console.log(res.data.data);
+          window.alert(res.data.data);
         }
+      }).catch(err => {
+        console.log(err);
+        console.log(err.response);
+        window.alert(err.response.data.data);
       });
     } else {
       alert("password and confirm password are not equal");
@@ -70,7 +77,7 @@ function Register() {
               <Form.Control
                 type="password"
                 placeholder="Enter Password"
-                onChange={(event) => setConfirmPassword(event.target.value)}
+                onChange={(event) => setCPassword(event.target.value)}
               />
               <small>Password and Confirm Password must be same</small>
             </Form.Group>
