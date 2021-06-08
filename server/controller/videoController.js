@@ -12,8 +12,7 @@ const storage = multer.diskStorage({
       cb(null, `__dirname/../uploads`)
     },
     filename: function (req, file, cb) {
-    //   cb(null, file.fieldname + '-' + Date.now())
-      console.log(file);
+        // console.log(file);
       cb(null, Date.now() + '-' + file.originalname );
     }
   })
@@ -40,6 +39,12 @@ exports.getAllVideos = async (req, res, next) => {
 exports.getVideo = async (req, res, next) => {
     try {
         const video = await Video.findById(req.params.id).populate('channel');
+        if(!video) {
+            return res.status(404).json({
+                status:'failed',
+                data: "Video does'nt exist"
+            });
+        }
         res.status(200).json({
             status:'success',
             data: video
@@ -53,34 +58,35 @@ exports.getVideo = async (req, res, next) => {
 }
 
 exports.uploadVideo = async(req, res, next) => {
+        // console.log(req)
         upload(req, res, err => {
             if(err instanceof multer.MulterError) {
-                // console.log('Error Occured while uploading', err); 
-                res.status(200).json({
+                console.log('Error Occured while uploading', err); 
+                return res.status(200).json({
                     status: 'failed',
                     data: `Error Occured, ${err}`
                 });
             }
             else if(err){
-                res.status(500).json({
+                return res.status(500).json({
                     status: 'failed',
                     data: `Error Occured, ${err}`
                 });
             }
             next();
-            // return;
         });
-    // } 
 }
 
 
 exports.createVideo = async (req, res, next) => {
     try{
-        const isAdmin = await Channel.findOne({ _id: req.body.channel, user: req.body.user});
-        // console.log(isAdmin);
+        const isAdmin = await Channel.findOne({ _id: req.body.channel, user: req.user._id});
         if(String(isAdmin) === 'null')
         {
-            res.status(200).json({
+            fs.unlink(req.file.path, (err) => {
+                if (err) throw err;
+            });
+            return res.status(200).json({
                 status: 'failed',
                 data: 'You are not authorized to upload on this channel'
             });
@@ -91,10 +97,8 @@ exports.createVideo = async (req, res, next) => {
         req.body.thumbnail = "uploads/"+thumb+'.jpg';
         await genThumbnail(req.body.video, "uploads/"+thumb+'.jpg', '720x404', {
             path: ffmpeg,
-            seek: '00:00:05'
+            seek: '00:00:02'
           })
-        // console.log(t);
-        
         const video = await Video.create(req.body);
         res.status(201).json({
             status:'success',
@@ -105,7 +109,7 @@ exports.createVideo = async (req, res, next) => {
         console.log(err);
         res.status(500).json({
             status: 'failed',
-            data: 'Some error occured'
+            data: `Some error occured ${err}`
         });
     }
 }
@@ -170,11 +174,27 @@ exports.getAllVideosOfChannel = async (req, res, next) => {
 
 exports.deleteVideo = async(req, res, next) => {
     try {
-        const video = await Video.deleteOne({ _id: req.params.id });
-        res.status(200).json({
-            status:'success',
-            data: video
-        });
+        const temp = await Video.findById(req.params.id).populate("channel");
+        if(String(temp.channel.user) === String(req.user._id)){
+            fs.unlink(temp.video, (err) => {
+                if (err) throw err;
+                // console.log(err);
+            });
+            fs.unlink(temp.thumbnail, (err) => {
+                if (err) throw err;
+                // console.log(err);
+            });
+            const video = await Video.deleteOne({ _id: req.params.id });
+            res.status(200).json({
+                status:'success',
+                data: video
+            });
+        } else {
+            return res.status(200).json({
+                status: 'failed',
+                data: 'You are not authorized to delete this video'
+            });
+        }
     } catch(err) {
         console.log(err);
         res.status(500).json({

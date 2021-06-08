@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Container, Row, Col } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import apis from "../api";
 
@@ -58,12 +58,13 @@ function CreateChannel() {
             <Form.Group controlId="formBasicDescription">
               <Form.Label>Description</Form.Label>
               <Form.Control
-                type="text"
+                as="textarea"
+                rows={5}
                 placeholder="Enter Description"
                 onChange={(event) => setDescription(event.target.value)}
               />
             </Form.Group>
-            <Button variant="success" style={{ width: "100%" }} type="submit">
+            <Button variant="primary" style={{ width: "100%" }} type="submit">
               Create Channel
             </Button>
             <br></br>

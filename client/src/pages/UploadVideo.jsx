@@ -16,8 +16,13 @@ function Upload() {
   const changeTitle = (event) => setTitle(event.target.value);
   const changeDescription = (event) => setDescription(event.target.value);
   const changeFile = async (event) => {
-    await setFile(event.target.files[0]);
-    await setVideo(URL.createObjectURL(event.target.files[0]));
+    if(event.target.files[0].type === "video/mp4"){
+      await setFile(event.target.files[0]);
+      await setVideo(URL.createObjectURL(event.target.files[0]));
+    } else {
+      window.alert("Only mp4 files allowed");
+      event.target.value = null;
+    }
   };
   const { id } = useParams();
 
@@ -34,21 +39,21 @@ function Upload() {
 
   const submitForm = async (event) => {
     event.preventDefault();
-    if (title === "" || description === "" || file === ""){
+    if (title === "" || description === "" || file === "") {
       return window.alert("Please fill all the fields");
     } else {
       // console.log(parseInt(myVid.current.duration / 60, 10));
       // if (myVid.current.readyState > 0) {
-        var minutes = parseInt(myVid.current.duration / 60, 10);
-        var seconds = myVid.current.duration % 60;
-        await setDuration(minutes + "." + Math.floor(seconds));
+      var minutes = parseInt(myVid.current.duration / 60, 10);
+      var seconds = myVid.current.duration % 60;
+      await setDuration(minutes + "." + Math.floor(seconds));
       // }
-  
+
       let formData = new FormData();
       const config = {
         header: { "content-type": "multipart/form-data" },
       };
-  
+
       formData.append("file", file);
       formData.append("title", title);
       formData.append("description", description);
@@ -56,7 +61,7 @@ function Upload() {
       // console.log(Cookies.get("user"));
       formData.append("channel", id);
       formData.append("user", Cookies.get("user"));
-      console.log(duration);
+      // console.log(duration);
       apis
         .uploadVideo(formData, config)
         .then((res) => {
@@ -70,7 +75,7 @@ function Upload() {
         })
         .catch((err) => {
           alert(err);
-          console.log(err.res);
+          console.log(err.response);
         });
     }
   };
@@ -104,8 +109,9 @@ function Upload() {
             <Form.Group>
               <Form.File
                 id="Files"
-                label="Example file input"
+                label="Upload Video"
                 name="file"
+                accept="video/mp4"
                 onChange={changeFile}
               />
             </Form.Group>

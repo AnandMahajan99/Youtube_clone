@@ -23,7 +23,8 @@ const videoSchema = new mongoose.Schema({
     },
     channel: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Channel'
+        ref: 'Channel',
+        required: [true, "A video must belong to a Channel."]
     },
     uploadOn: {
         type: Date,

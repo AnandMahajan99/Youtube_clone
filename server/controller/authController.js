@@ -81,7 +81,7 @@ exports.login = async (req, res, next) => {
         data: "Email or Password is wrong",
       });
     }
-    
+
     //3) If everything ok, send token to client
     createSendToken(user, 200, res);
   } catch (err) {
@@ -128,17 +128,19 @@ exports.protect = async (req, res, next) => {
     }
 
     // 2) Verification token
-    let decoded; 
+    // let decoded; 
 
-    jwt.verify(token, process.env.JWT_SECRET, function(err, decode) {
-        if(err)
-            return res.status(401).json({
-                status: "failed",
-                data: "Please Login again.",
-              });
-        decoded = decode;
-    });
-
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET)
+    // , function(err, decode) {
+    //     if(err){
+    //         return res.status(401).json({
+    //             status: "failed",
+    //             data: "Please Login again.",
+    //           });
+    //     }
+    //     decoded = decode;
+    // });
+    // console.log(decoded);
     // 3) Check if user still exist
     const currentUser = await User.findById(decoded.id);
     if (!currentUser) {
@@ -158,6 +160,7 @@ exports.protect = async (req, res, next) => {
     // GRAND ACCESS TO PROTEECTED ROUTE
     req.user = currentUser;
     res.locals.user = currentUser;
+    // console.log("Accesss");
     next();
   } catch (err) {
     res.status(500).json({

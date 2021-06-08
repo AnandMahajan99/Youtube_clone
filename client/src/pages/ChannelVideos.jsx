@@ -1,11 +1,11 @@
 // Only Admin can access
 
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import { Button, Container, Table, Image } from "react-bootstrap";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import apis from "../api";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 
 function ChannelVideos() {
   const [data, setData] = useState(null);
@@ -57,17 +57,19 @@ function ChannelVideos() {
                 </td>
                 <td key={item._id + "1"}>{item.title}</td>
                 <td key={item._id + "2"}>
-                  <Button variant="outline-primary" href={"/video/" + item._id}>
+                  <NavLink to={"/video/" + item._id}>
+                  <Button variant="outline-primary">
                     View
                   </Button>
+                  </NavLink>
                 </td>
                 <td key={item._id + "3"}>
+                <NavLink to={"/update/" + item._id}>
                   <Button
-                    variant="outline-success"
-                    href={"/update/" + item._id}
-                  >
+                    variant="outline-success">
                     Update
                   </Button>
+                  </NavLink>
                 </td>
                 <td key={item._id + "4"}>
                   <Button
@@ -85,17 +87,21 @@ function ChannelVideos() {
     else
       return (
         <>
-          <h1 className="text-center mt-4">No Videos Available</h1>
-          <Button href={"/upload/" + channel._id} variant="outline-success">
-            <AiOutlineCloudUpload size={100} color="" style={{}} /> Upload
+          <h2 className="text-center mt-4">No Videos Available</h2>
+          <div className="text-center mt-4" style={{ justifyContent: 'center'}}>
+          <NavLink to={"/upload/" + channel._id}>
+          <Button variant="outline-success" style={{ fontSize: '24px'}}>
+            <AiOutlineCloudUpload size={100} color="" style={{}} /> <br/>Upload
           </Button>
+          </NavLink>
+          </div>
         </>
       );
   };
 
   return (
     <Container>
-      <h2 className="text-center mt-4">{channel.name}</h2>
+      <h1 className="text-center mt-4">{channel.name}</h1>
       <Table>
         <TableData />
       </Table>

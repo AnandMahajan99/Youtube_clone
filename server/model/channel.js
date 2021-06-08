@@ -7,11 +7,13 @@ const channelSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: [true, 'Description must required']
+        required: [true, 'Description must required'],
     },
+    // createdBy
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: [true, "A channel must have a user"]
     },
     image: String
 });
