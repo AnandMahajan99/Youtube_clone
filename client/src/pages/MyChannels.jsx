@@ -43,13 +43,16 @@ function MyChannels() {
             <tr key={item._id + "0"}>
               <td key={item._id + "1"}>{item.name}</td>
               <td key={item._id + "2"}>
-                <NavLink to={"/admin/video/channel/" + item._id}><Button>View</Button></NavLink>
+                <NavLink to={"/admin/video/channel/" + item._id}><Button variant="outline-info">View</Button></NavLink>
               </td>
               <td key={item._id + "3"}>
-                <NavLink to={"/upload/" + item._id}><Button>Upload</Button></NavLink>
+                <NavLink to={"/admin/video/channel/" + item._id}><Button variant="outline-success">Edit</Button></NavLink>
               </td>
               <td key={item._id + "4"}>
-                <Button variant="danger" onClick={() => handleDelete(item._id)}>
+                <NavLink to={"/upload/" + item._id}><Button variant="outline-success">Upload</Button></NavLink>
+              </td>
+              <td key={item._id + "5"}>
+                <Button variant="outline-danger" onClick={() => handleDelete(item._id)}>
                   Delete
                 </Button>
               </td>

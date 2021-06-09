@@ -23,7 +23,7 @@ function ChannelPage() {
     apis.getChannel(id).then((res) => {
       setChannel(res.data.data);
     });
-  }, []);
+  }, [id]);
 
   return (
     <Container fluid>

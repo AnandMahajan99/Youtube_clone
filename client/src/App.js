@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import Home from './pages/Home';
 // import Subscriptions from './pages/Subscriptions';
 import Upload from './pages/UploadVideo';
-import MyCard from './components/MyCard';
+// import MyCard from './components/MyCard';
 import MyNavbar from './components/MyNavbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -16,6 +16,7 @@ import Home from "./pages/Home";
 import Video from "./pages/Video";
 import ChannelPage from "./pages/ChannelPage";
 import ChannelVideos from "./pages/ChannelVideos";
+import Profile from "./pages/Profile";
 
 // import { Link } from "react-router-dom";
 // import "./components/Navbar.css";
@@ -39,6 +40,7 @@ function App() {
           <Route path='/admin/video/channel/:id' component={ChannelVideos} />
           <Route path='/video/:id' component={Video} />
           <Route path='/upload/:id' component={Upload} />
+          <Route path='/profile' component={Profile} />
         </Switch>
 
       </Router>

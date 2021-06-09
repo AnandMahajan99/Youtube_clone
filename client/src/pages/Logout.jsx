@@ -16,7 +16,7 @@ function Logout() {
             // window.location = '/login';
             history.push('/login');
         }).catch(err => console.log(err))
-    }, [])
+    }, [history])
 
     return (
         <div>

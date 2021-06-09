@@ -1,7 +1,7 @@
 // Only Admin can access
 
 import React, { useState, useEffect } from "react";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { Button, Container, Table, Image } from "react-bootstrap";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import apis from "../api";
@@ -19,7 +19,7 @@ function ChannelVideos() {
     apis.getChannel(id).then((res) => {
       setChannel(res.data.data);
     });
-  }, []);
+  }, [id]);
 
   const handleDelete = async (id) => {
     if (window.confirm("Do you really want to delete video"))

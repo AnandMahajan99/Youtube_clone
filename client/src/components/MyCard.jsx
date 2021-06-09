@@ -4,14 +4,12 @@ import {
   Container,
   Image,
   Row,
-  Col,
-  Button,
-  Table,
+  Col
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Card.css";
 import * as GoIcons from "react-icons/go";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import apis from "./../api";
 
 function MyCard() {
@@ -40,14 +38,15 @@ function MyCard() {
               style={{
                 textDecoration: "none",
                 color: "#212529",
-                marginBottom: "8px",
+                marginBottom: "8px"
               }}
             >
-              <Card style={{ width: "20rem", border: "none" }}>
+              <Card style={{ width: "20rem" }} className="card_hover">
                 <Card.Img
                   variant="top"
                   // src="https://source.unsplash.com/user/erondu/720x404"
                   src={"/" + item.thumbnail}
+                  style={{  border: "3px solid rgb(219 206 206 / 20%)" }}
                 />
                 <Card.Body>
                   <Row>
@@ -56,6 +55,7 @@ function MyCard() {
                         style={{ padding: "0px" }}
                         src="https://source.unsplash.com/user/erondu/40x40"
                         roundedCircle
+
                       />
                     </Col>
                     <Col xs={10}>

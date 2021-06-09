@@ -3,6 +3,10 @@ html {
   font-family: "Montserrat", sans-serif;
 }
 
+.card_hover:hover{
+  box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+
 .card-text {
   word-break: break-word;
   overflow: hidden;

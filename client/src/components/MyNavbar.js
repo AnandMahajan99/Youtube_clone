@@ -9,8 +9,6 @@ import {
   Navbar,
   Nav,
   NavDropdown,
-  Form,
-  FormControl,
   Button,
   Container,
   Image,
@@ -18,55 +16,59 @@ import {
 
 
 function MyNavbar(props) {
-  const [sidebar, setSidebar] = useState(false);
-  const showSidebar = () => setSidebar(!sidebar);
+  // const [sidebar, setSidebar] = useState(false);
+  // const showSidebar = () => setSidebar(!sidebar);
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <>
       <IconContext.Provider value={{ color: "fff" }}>
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar expanded={expanded} expand="lg" bg="dark" variant="dark">
           <Container>
             <Image src="logo32x32.png" alt="Brand Image" />
-            <Navbar.Brand href="#">| You-Tube</Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="mr-auto">
-                <NavLink to="/" style={{ textDecoration: 'none', color: "#fff"}}>Home</NavLink>
+            <Navbar.Brand href="#" className="mr-auto">| You-Tube</Navbar.Brand>
+            <Navbar.Toggle onClick={() => setExpanded(expanded ? false : "expanded")} aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav" className="text-center">
+              <Nav className="m-2">
+                <NavLink to="/" style={{ textDecoration: 'none', color: "#fff"}} onClick={() => setExpanded(false)}>Home</NavLink>
                 {/* <NavLink href="/">Subscriptions</NavLink> */}
               </Nav>
-              <Nav className="">
-                <NavDropdown title="Account" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">
+              <Nav className="ml-auto">
+                <NavDropdown title="Account" id="collasible-nav-dropdown" className="m-2"> 
+                  <NavDropdown.Item>
+                  <NavLink to="/profile" style={{ textDecoration: 'none', color: '#212529'}} onClick={() => setExpanded(false)}>
                     Edit Profile
+                  </NavLink>
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item>
-                    <NavLink to='/channel' style={{ textDecoration: 'none', color: '#212529'}}>
+                    <NavLink to='/channel' style={{ textDecoration: 'none', color: '#212529'}} onClick={() => setExpanded(false)}>
                     My Channel
                     </NavLink>
                   </NavDropdown.Item>
                 </NavDropdown>
 
                   <NavLink to="/register">
-                <Button variant="outline-info" className="mr-2">
+                <Button variant="outline-info" className="m-2" onClick={() => setExpanded(false)}>
                     Register
                 </Button>
                   </NavLink>
                   <NavLink to="/login">
-                <Button variant="outline-info" className="mr-2">
+                <Button variant="outline-info" className="m-2" onClick={() => setExpanded(false)}>
                     Login
                 </Button>
                   </NavLink>
                   <NavLink to="/logout">
-                <Button variant="outline-info" className="mr-2" href="/logout">
+                <Button variant="outline-info" className="m-2" href="/logout" onClick={() => setExpanded(false)}>
                   Logout
                 </Button>
                 </NavLink>
                 <NavLink to="/channel/new">
                 <Button
                   variant="outline-info"
-                  className="mr-2"
+                  className="m-2"
                   href="/channel/new"
+                  onClick={() => setExpanded(false)}
                 >
                   Create Channel
                 </Button>
